@@ -1,9 +1,23 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MyClasses : MonoBehaviour
 { }
+public class WeaponEquippedIndex
+{
+    public enum WeaponType
+    {
+        Male,
+        Ranged
+    }
+    [Tooltip("this is the item id")]
+    public int itemID;
+    public GameObject weaponPrefab;
+    public Animator weaponAnimation;
+    public WeaponType weaponType;
 
+}
 
 [Serializable]
 public class BaseStats
@@ -30,5 +44,46 @@ public class BaseStats
         arcane = arc;
         luck = luc;
     }
+}
+
+[Serializable]
+public class QuestObjective
+{
+    // is inside Quest as a container for objectives has tipes with polymorphysom
+}
+[Serializable]
+public class KillObjective : QuestObjective
+{
+
+}
+[Serializable]
+public class SpecialItemObjective : QuestObjective
+{
+
+}
+[Serializable]
+public class GatheringObjective : QuestObjective
+{
+
+}
+[Serializable]
+public class Dialogue
+{
+
+}
+[Serializable]
+public class DialogueOption
+{
+
+}
+[Serializable]
+public class DialogueEvent
+{
+    // enum then show a certian thing like
+    // triger sometig
+    // aquire resources
+    // trugger a quest
+    // shit like that 
+    public UnityEvent triggerAction; 
 }
     

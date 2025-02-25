@@ -10,9 +10,9 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviour
 {
     [Header("Panels & UI Elements")]
-    [SerializeField] private Animator InfoPanel;   // Information panel animator
-    [SerializeField] private Animator OptionsPanel; // Options panel animator
-    [SerializeField] private Animator NewSavePanel; // New game save panel animator
+    [SerializeField] private Animator InfoPanel;   // Animator for the information panel
+    [SerializeField] private Animator OptionsPanel; // Animator for the options panel
+    [SerializeField] private Animator NewSavePanel; // Animator for the new game save panel
     [SerializeField] private GameObject loadGamePanel; // Panel containing save game options
     private const string activate = "Active"; // Animation parameter for activating panels
 
@@ -30,6 +30,7 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
+        // Check for missing references
         if (saveLoadManager == null)
         {
             Debug.LogError("[MainMenu] SaveLoadManager is not assigned!");
@@ -56,48 +57,70 @@ public class MainMenu : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) // Escape key toggles panels
+        // Escape key toggles panels
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             HandleInput();
         }
     }
 
     #region Panel Management
+    /// <summary>
+    /// Opens the information panel with an animation.
+    /// </summary>
     public void OpenInfoPanel()
     {
         InfoPanel.gameObject.SetActive(true);
         InfoPanel.SetBool(activate, true);
     }
 
+    /// <summary>
+    /// Closes the information panel with an animation.
+    /// </summary>
     public void CloseInfoPanel()
     {
         InfoPanel.SetBool(activate, false);
-        Invoke("DelaySetActive", 2);
+        Invoke("DelaySetActive", 2); // Delay deactivation to allow animation to play
     }
 
+    /// <summary>
+    /// Opens the options panel with an animation.
+    /// </summary>
     public void OpenOptionPanel()
     {
         OptionsPanel.gameObject.SetActive(true);
         OptionsPanel.SetBool(activate, true);
     }
 
+    /// <summary>
+    /// Closes the options panel with an animation.
+    /// </summary>
     public void CloseOptionPanel()
     {
         OptionsPanel.SetBool(activate, false);
-        Invoke("DelaySetActive", 2);
+        Invoke("DelaySetActive", 2); // Delay deactivation to allow animation to play
     }
 
+    /// <summary>
+    /// Delays deactivation of panels to allow animations to finish.
+    /// </summary>
     void DelaySetActive()
     {
         InfoPanel.gameObject.SetActive(false);
         OptionsPanel.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Quits the application.
+    /// </summary>
     public void QuitGame()
     {
         Application.Quit();
     }
 
+    /// <summary>
+    /// Handles input for toggling panels (e.g., pressing Escape).
+    /// </summary>
     void HandleInput()
     {
         if (InfoPanel.gameObject.activeSelf || OptionsPanel.gameObject.activeSelf || NewSavePanel.gameObject.activeSelf)
@@ -115,23 +138,35 @@ public class MainMenu : MonoBehaviour
     #endregion
 
     #region New Game Management
+    /// <summary>
+    /// Activates the new game panel with an animation.
+    /// </summary>
     public void ActivateNewGamePanel()
     {
         NewSavePanel.gameObject.SetActive(true);
         NewSavePanel.SetBool(activate, true);
     }
 
+    /// <summary>
+    /// Deactivates the new game panel with an animation.
+    /// </summary>
     public void DeactivateNewGamePanel()
     {
         NewSavePanel.SetBool(activate, false);
-        Invoke("DelayNewGame", 1);
+        Invoke("DelayNewGame", 1); // Delay deactivation to allow animation to play
     }
 
+    /// <summary>
+    /// Delays deactivation of the new game panel to allow animations to finish.
+    /// </summary>
     void DelayNewGame()
     {
         NewSavePanel.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Starts a new game with the specified save name.
+    /// </summary>
     public void NewGamePartTwo()
     {
         if (saveNameInput == null)
@@ -155,6 +190,9 @@ public class MainMenu : MonoBehaviour
     #endregion
 
     #region Load & Continue Game
+    /// <summary>
+    /// Continues the game from the latest save file.
+    /// </summary>
     public void ContineuGame()
     {
         string latestSave = saveLoadManager.GetLatestSaveFile();
@@ -169,26 +207,35 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Loads the selected save file from the dropdown.
+    /// </summary>
     public void LoadGame()
     {
         selectedSave = saveDropdown.options[saveDropdown.value].text;
 
         if (selectedSave != "No Saves Found")
         {
-            conBTN.interactable = true;
+            conBTN.interactable = true; // Enable the continue button
             Debug.Log("[MainMenu] Selected Save: " + selectedSave);
         }
         else
         {
-            conBTN.interactable = false;
+            conBTN.interactable = false; // Disable the continue button
         }
     }
 
+    /// <summary>
+    /// Opens the load game panel.
+    /// </summary>
     public void OpenLoadGamePanel()
     {
         loadGamePanel.SetActive(true);
     }
 
+    /// <summary>
+    /// Closes the load game panel.
+    /// </summary>
     public void CloseLoadGamePanel()
     {
         loadGamePanel.SetActive(false);
@@ -196,6 +243,9 @@ public class MainMenu : MonoBehaviour
     #endregion
 
     #region Save System
+    /// <summary>
+    /// Refreshes the list of save files in the dropdown.
+    /// </summary>
     private void RefreshSaveList()
     {
         if (saveDropdown == null)
@@ -210,13 +260,13 @@ public class MainMenu : MonoBehaviour
         if (saves.Length == 0)
         {
             Debug.Log("[MainMenu] No saves found.");
-            contineuBTN.SetActive(false);
+            contineuBTN.SetActive(false); // Disable the continue button
             saveDropdown.AddOptions(new List<string> { "No Saves Found" });
         }
         else
         {
             Debug.Log("[MainMenu] Found " + saves.Length + " save files.");
-            contineuBTN.SetActive(true);
+            contineuBTN.SetActive(true); // Enable the continue button
             saveDropdown.AddOptions(new List<string>(saves));
         }
     }
