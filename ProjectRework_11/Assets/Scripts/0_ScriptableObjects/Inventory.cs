@@ -17,6 +17,8 @@ public class Inventory : ScriptableObject
 
     [Header("Weapon slots")]
     public Item[] weaponsArray = new Item[3]; // More flexible
+    [Range(0,2)]
+    
 
     [Header("Consumable slots")]
     public Item[] consumablesArray = new Item[3]; // Easier to manage

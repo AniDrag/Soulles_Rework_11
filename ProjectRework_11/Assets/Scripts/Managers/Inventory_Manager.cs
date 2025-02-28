@@ -16,6 +16,7 @@ public class Inventory_Manager : MonoBehaviour
 
     [Header("Player References")]
     [SerializeField] Transform player; // Reference to the player's transform
+    [SerializeField] Keybinds KEY;
 
     [Header("Inventory References")]
     public Inventory inventory; // Reference to the inventory ScriptableObject
@@ -42,12 +43,12 @@ public class Inventory_Manager : MonoBehaviour
     private void Awake()
     {
         // Singleton pattern implementation
-        if (instance != null && instance != this)
+       /* if (instance != null && instance != this)
         {
             Debug.LogWarning($"Inventory manager destroyed (duplicate): {gameObject.name}");
             Destroy(gameObject);
             return;
-        }
+        }*/
 
         instance = this;
         DontDestroyOnLoad(gameObject); // Makes the inventory manager persist across scenes
@@ -61,6 +62,18 @@ public class Inventory_Manager : MonoBehaviour
             Debug.LogWarning("Inventory is not assigned!");
         }
         // Assign inventory UI to UI manager (placeholder for future implementation)
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KEY.Inventory))
+        {
+            if (inventoryUI.activeSelf)
+            {
+                inventoryUI.SetActive(false);
+                return;
+            }
+            inventoryUI.SetActive(inventoryUI.activeSelf);
+        }
     }
 
     /// <summary>

@@ -86,4 +86,15 @@ public class DialogueEvent
     // shit like that 
     public UnityEvent triggerAction; 
 }
-    
+public class WeaponEquipedIndex
+{
+    public enum WeaponType
+    {
+        MaleWeapon,
+        RangedWeapon
+    }
+    public int ItemId;
+    public GameObject weaponPrefab;
+    public WeaponType weaponType;
+}
+
